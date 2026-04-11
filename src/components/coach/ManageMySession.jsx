@@ -41,12 +41,7 @@ const ManageMySession = () => {
 
     const getAllSession = async () => {
         try {
-
-            console.log("STEP 1 - API CALL HO RAHI HAI")
-
             const res = await axios.get("/mysession/allsession")
-
-            console.log("STEP 2 - SESSION DATA", res.data.data[0])
 
             setSession(res.data.data)
 

@@ -198,7 +198,7 @@ const AddBooking = () => {
             <button
               type="button"
               onClick={() => navigate("/players/payments")}
-              className="px-8 py-2.5 bg-[#059669] text-white rounded-[12px] font-medium hover:bg-[#047857] shadow-sm shadow-[#059669]/20 transition-all duration-200 w-full md:w-auto"
+              className="hidden px-8 py-2.5 bg-[#059669] text-white rounded-[12px] font-medium hover:bg-[#047857] shadow-sm shadow-[#059669]/20 transition-all duration-200 w-full md:w-auto"
             >
               Pay Now
             </button>

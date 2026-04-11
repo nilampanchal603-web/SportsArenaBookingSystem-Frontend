@@ -17,7 +17,7 @@ export const Signup = () => {
         try {
             //axios.post("http://localhost:3000/user/register")
             const res = await axiosInstance.post("/auth/register", data)
-                       console.log("response....", res)
+            console.log("response....", res)
             console.log("response.data....", res.data)
             console.log("response.data.data....", res.data.data)
             console.log("status", res.status)
@@ -59,7 +59,7 @@ export const Signup = () => {
                 message: "Password is required*"
             },
             pattern: {
-                value: true,
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/,
                 message: " password patter not valid*"
             }
 
@@ -153,12 +153,8 @@ export const Signup = () => {
                         className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
                     />
                     <p className="text-red-500 text-sm">{errors.password?.message}</p>
-
-
+                    <p className="text-xs text-gray-600">Must contain 8 characters, uppercase, lowercase, number & special character</p>
                 </div>
-
-
-
 
                 {/* Confirm Password */}
                 <div className="mb-2">
@@ -185,7 +181,7 @@ export const Signup = () => {
                     </select>
                     <p className="text-red-500 text-sm">{errors.role?.message}</p>
                 </div>
-                
+
                 {/* Phone */}
                 <div className="mb-4">
                     <input

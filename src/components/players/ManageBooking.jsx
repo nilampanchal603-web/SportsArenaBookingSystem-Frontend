@@ -61,6 +61,87 @@ const ManageBooking = () => {
         }
     }, [location.state]);
 
+    const handlePayment = async (booking) => {
+        const res = await new Promise((resolve) => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+
+        if (!res) {
+            toast.error("Razorpay SDK failed to load. Are you online?");
+            return;
+        }
+
+        try {
+            const result = await axios.post("/payment/create-order", {
+                amount: booking.totalAmount,
+                bookingId: booking._id,
+            });
+
+            if (!result.data) {
+                toast.error("Server error. Please try again.");
+                return;
+            }
+
+            const { amount, id: order_id, currency } = result.data.data;
+            const parsedUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+            const options = {
+                key: "rzp_test_SaEsDiqNsTPKUx",
+                amount: amount.toString(),
+                currency: currency,
+                name: "Sports Arena",
+                description: "Booking Payment",
+                order_id: order_id,
+                handler: async function (response) {
+                    try {
+                        const data = {
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                            amount: booking.totalAmount,
+                            bookingId: booking._id,
+                            userId: parsedUser.id || booking.userId?._id,
+                        };
+
+                        const verify = await axios.post("/payment/verify-payment", data);
+
+                        if (verify.data) {
+                            toast.success("Payment Successful!");
+                            localStorage.removeItem("cart"); // Clear cart only after success as per requirements
+                            getAllBooking();
+                        }
+                    } catch (error) {
+                        toast.error("Payment failed message");
+                        navigate("/players/booking"); 
+                    }
+                },
+                prefill: {
+                    name: parsedUser.firstName ? `${parsedUser.firstName} ${parsedUser.lastName || ""}` : "Player",
+                    email: parsedUser.email || "test@test.com",
+                    contact: "9999999999",
+                },
+                theme: {
+                    color: "#2563EB",
+                },
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.on("payment.failed", function (response) {
+                toast.error("Payment failed message");
+                navigate("/players/booking");
+            });
+            paymentObject.open();
+
+        } catch (error) {
+            toast.error("Payment failed message");
+            navigate("/players/booking");
+        }
+    };
+
     return (
         <div className="space-y-6">
 
@@ -182,24 +263,39 @@ const ManageBooking = () => {
                                             )}
 
                                             {booking.status === "confirmed" && (
-                                                submittedFeedbacks.includes(booking._id) ? (
-                                                    <span className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-green-700">
-                                                        ✅ Feedback Submitted
-                                                    </span>
-                                                ) : (
-                                                    <button
-                                                        onClick={() => navigate(`/players/addfeedback`, { state: { 
-                                                            userId: booking.userId?._id,
-                                                            arenaId: booking.arenaId?._id,
-                                                            coachId: booking.coachId?._id || "",
-                                                            from: "/players/booking",
-                                                            bookingId: booking._id
-                                                        } })}
-                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#EFF6FF] text-[#1E40AF] hover:bg-[#DBEAFE] transition-colors"
-                                                    >
-                                                        <FiMessageSquare /> Give Feedback
-                                                    </button>
-                                                )
+                                                <>
+                                                    {booking.paymentStatus === "paid" ? (
+                                                        <span className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-green-700">
+                                                            ✅ Payment Successful
+                                                        </span>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() => handlePayment(booking)}
+                                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#D1FAE5] text-[#065F46] hover:bg-[#A7F3D0] transition-colors"
+                                                        >
+                                                            Pay Now
+                                                        </button>
+                                                    )}
+
+                                                    {submittedFeedbacks.includes(booking._id) ? (
+                                                        <span className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-green-700">
+                                                            ✅ Feedback Submitted
+                                                        </span>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() => navigate(`/players/addfeedback`, { state: { 
+                                                                userId: booking.userId?._id,
+                                                                arenaId: booking.arenaId?._id,
+                                                                coachId: booking.coachId?._id || "",
+                                                                from: "/players/booking",
+                                                                bookingId: booking._id
+                                                            } })}
+                                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#EFF6FF] text-[#1E40AF] hover:bg-[#DBEAFE] transition-colors"
+                                                        >
+                                                            <FiMessageSquare /> Give Feedback
+                                                        </button>
+                                                    )}
+                                                </>
                                             )}
 
                                         </td>

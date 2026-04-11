@@ -168,7 +168,7 @@ export const CoachNavbar = () => {
               </div>
 
               {/* Chart */}
-              <div className="bg-white p-6 rounded-[16px] shadow-sm border border-[#E5E7EB] h-[350px] mb-8">
+              <div className="bg-white p-6 rounded-[16px] shadow-sm border border-[#E5E7EB] h-[350px] min-h-[350px] mb-8">
                 <h2 className="text-lg font-semibold text-[#0F172A] mb-6">Coach Overview Metrics</h2>
                 <ResponsiveContainer width="100%" height="85%">
                   <BarChart data={[

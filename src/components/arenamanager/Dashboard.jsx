@@ -161,40 +161,44 @@ const Dashboard = () => {
 
             {/* Charts Section */}
             <div className="bg-white p-6 rounded-[16px] shadow-sm border border-[#E5E7EB] mb-6">
-                <h2 className="text-lg font-semibold text-[#0F172A] mb-6">Bookings & Revenue Overview</h2>
-                <ResponsiveContainer width="100%" height={320}>
-                    <LineChart data={bookingStats} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                        <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 12 }} dy={10} />
-                        <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 12 }} />
-                        <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 12 }} />
-                        <Tooltip
-                            contentStyle={{ borderRadius: '12px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-                            itemStyle={{ color: '#0F172A', fontWeight: 500 }}
-                        />
-                        <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '14px', color: '#6B7280' }} />
-                        <Line
-                            yAxisId="left"
-                            type="monotone"
-                            dataKey="bookings"
-                            name="Total Bookings"
-                            stroke="#2563EB"
-                            strokeWidth={3}
-                            dot={false}
-                            activeDot={{ r: 6, fill: '#1E40AF', strokeWidth: 0 }}
-                        />
-                        <Line
-                            yAxisId="right"
-                            type="monotone"
-                            dataKey="revenue"
-                            name="Revenue (₹)"
-                            stroke="#10B981"
-                            strokeWidth={3}
-                            dot={false}
-                            activeDot={{ r: 6, fill: '#059669', strokeWidth: 0 }}
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
+                <h2 className="text-lg font-semibold text-[#0F172A] mb-6">
+                    Bookings & Revenue Overview
+                </h2>
+                <div style={{ width: "100%", height: "300px", minHeight: "300px" }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={bookingStats} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                            <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 12 }} dy={10} />
+                            <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 12 }} />
+                            <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} tick={{ fill: '#6B7280', fontSize: 12 }} />
+                            <Tooltip
+                                contentStyle={{ borderRadius: '12px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                                itemStyle={{ color: '#0F172A', fontWeight: 500 }}
+                            />
+                            <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '14px', color: '#6B7280' }} />
+                            <Line
+                                yAxisId="left"
+                                type="monotone"
+                                dataKey="bookings"
+                                name="Total Bookings"
+                                stroke="#2563EB"
+                                strokeWidth={3}
+                                dot={false}
+                                activeDot={{ r: 6, fill: '#1E40AF', strokeWidth: 0 }}
+                            />
+                            <Line
+                                yAxisId="right"
+                                type="monotone"
+                                dataKey="revenue"
+                                name="Revenue (₹)"
+                                stroke="#10B981"
+                                strokeWidth={3}
+                                dot={false}
+                                activeDot={{ r: 6, fill: '#059669', strokeWidth: 0 }}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
 
             {/* Grid Layout for Lists */}

@@ -14,7 +14,6 @@ export const Login = () => {
 
             const res = await axiosInstance.post("/auth/login", data)
 
-            console.log("response", res)
             //     console.log("response", res.data)
 
             // const token = res.data?.data?.token || res.data?.token
@@ -78,9 +77,9 @@ export const Login = () => {
 
     return (
 
-        <div className="min-h-screen flex bg-gradient-to-r from-gray-900 to-orange-200">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-900 to-orange-200">
 
-            <div className="w-full md:w-1/2 flex items-center justify-center p-8">
+            <div className="w-full flex items-center justify-center p-8">
 
                 <form
                     onSubmit={handleSubmit(submitHandler)}

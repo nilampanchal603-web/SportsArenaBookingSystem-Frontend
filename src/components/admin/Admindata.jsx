@@ -51,7 +51,7 @@ export const Admindata = () => {
       </div>
 
       {/* Chart Section */}
-      <div className="bg-white p-6 rounded-[16px] shadow-sm border border-[#E5E7EB] h-[450px]">
+      <div className="bg-white p-6 rounded-[16px] shadow-sm border border-[#E5E7EB] h-[450px] min-h-[450px]">
         <h3 className="text-xl font-semibold text-[#0F172A] mb-6">Platform Overview</h3>
         <ResponsiveContainer width="100%" height="90%">
           <BarChart data={[
